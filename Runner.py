@@ -1,7 +1,7 @@
 from Environment import Grid
 from Cell import Cell
 from Agent import agent
-import pygame
+import pygame, time
 
 dim = 5
 size = width, height = 900, 900
@@ -64,4 +64,8 @@ while play_game:
         if pygame.mouse.get_pressed()[0]:
             pos = get_queried_pos(pygame.mouse.get_pos())
             print(environment.field[pos[0]][pos[1]])
+
+    agent.basic_agent1()
+    update_ui()
+    time.sleep(0.5)
 

@@ -44,7 +44,7 @@ play_game = True
 def get_queried_pos(pos):
     gap_w = width // dim
     gap_h = height // dim
-    return  pos[0] // gap_w, pos[1] // gap_h
+    return  pos[1] // gap_w, pos[0] // gap_h
 
 while play_game:
     pygame.time.Clock().tick(24)

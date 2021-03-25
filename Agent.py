@@ -33,6 +33,7 @@ class agent:
         self.move(to_move.x, to_move.y)
 
     def update_belief(self):
+        #TODO: actually update the belief
         pass
     def move(self, new_x, new_y):
         self.environment.field[self.agent_x][self.agent_y].curr_agent = False
@@ -60,7 +61,7 @@ class agent:
         self.belief = list()
         for i in range(self.dim):
             self.belief.append(list())
-            for j in range(self.dim):
+            for _ in range(self.dim):
                 self.belief[i].append(1/(self.environment.dim ** 2))
     
         pprint(self.environment.field)

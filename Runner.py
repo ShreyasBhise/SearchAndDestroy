@@ -16,25 +16,25 @@ CAVE = 0.9
 def update_ui():
     for i in range(dim):
         for j in range(dim):
-            print(i, j, (i*(width/dim), j*(height/dim)))
+            # print(i, j, (i*(width/dim), j*(height/dim)))
             if environment.field[i][j].terrain_type == FLAT: #IF FLAT, PRINT WHITE SQUARE
-                pygame.draw.rect(screen,(255,255,255), (i*(width/dim), j*(height/dim), width/dim, height/dim))
+                pygame.draw.rect(screen,(255,255,255), (j*(width/dim), i*(height/dim), width/dim, height/dim))
             elif environment.field[i][j].terrain_type == HILL: #IF HILL, PRINT LIGHT GREEN SQUARE
-                pygame.draw.rect(screen,(130,227,2), (i*(width/dim), j*(height/dim), width/dim, height/dim))
+                pygame.draw.rect(screen,(130,227,2), (j*(width/dim), i*(height/dim), width/dim, height/dim))
 
             elif environment.field[i][j].terrain_type == FOREST: #IF FOREST, PRINT DARK GREEN SQUARE
-                pygame.draw.rect(screen,(44, 112, 34), (i*(width/dim), j*(height/dim), width/dim, height/dim))
+                pygame.draw.rect(screen,(44, 112, 34), (j*(width/dim), i*(height/dim), width/dim, height/dim))
 
             else: #IF CAVE, PRINT GRAY SQUARE
-                pygame.draw.rect(screen,(120, 120,120), (i*(width/dim), j*(height/dim), width/dim, height/dim))
+                pygame.draw.rect(screen,(120, 120,120), (j*(width/dim), i*(height/dim), width/dim, height/dim))
             
             #IF CELL IS TARGET, PRINT RED X
             if environment.field[i][j].is_target:
                 text = font.render('X', True, (255, 0, 0))
                 rect = text.get_rect()
-                rect.center = (i*(width/dim) + (width/(2*dim)), j*(height/dim) + (height/(2*dim)))
+                rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
                 screen.blit(text, rect)   
-            pygame.draw.rect(screen,(0,0,0), (i*(width/dim), j*(height/dim), width/dim, height/dim), 1)
+            pygame.draw.rect(screen,(0,0,0), (j*(width/dim), i*(height/dim), width/dim, height/dim), 1)
     pygame.display.flip()
 pygame.init()
 font = pygame.font.SysFont('segoeuissymbol', 50)

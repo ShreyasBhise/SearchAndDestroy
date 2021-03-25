@@ -17,6 +17,7 @@ class Grid:
 
     def query_cell(self, row, col):
         return self.field[row][col].search_cell()
+        
     def __init__(self, dim):
         self.dim = dim
 

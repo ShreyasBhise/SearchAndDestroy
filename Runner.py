@@ -1,11 +1,13 @@
 from Environment import Grid
 from Cell import Cell
+from Agent import agent
 import pygame
 
 dim = 5
 size = width, height = 900, 900
 screen = pygame.display.set_mode(size)
 environment = Grid(dim)
+agent = agent(environment)
 
 
 FLAT = 0.1
@@ -34,6 +36,16 @@ def update_ui():
                 rect = text.get_rect()
                 rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
                 screen.blit(text, rect)   
+            elif environment.field[i][j].searched:
+                text = font.render('C', True, (255, 69, 0))
+                rect = text.get_rect()
+                rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
+                screen.blit(text, rect)
+            elif environment.field[i][j].curr_agent:
+                text = font.render('A', True, (0, 0, 0))
+                rect = text.get_rect()
+                rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
+                screen.blit(text, rect)
             pygame.draw.rect(screen,(0,0,0), (j*(width/dim), i*(height/dim), width/dim, height/dim), 1)
     pygame.display.flip()
 pygame.init()

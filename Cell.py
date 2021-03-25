@@ -13,6 +13,8 @@ class Cell:
         else:
             self.terrain_type = 0.9 #CAVE
         self.is_target = False
+        self.curr_agent = False
+        self.searched = False
 
     def set_terrain(self, terrain):
         self.terrain_type = terrain
@@ -21,6 +23,7 @@ class Cell:
         self.is_target = True
 
     def search_cell(self):
+        self.searched = True
         if not self.is_target:
             return False
         return random() > self.terrain_type
@@ -28,4 +31,3 @@ class Cell:
     
     def __repr__(self):
        return '({self.x}, {self.y}) is {self.terrain_type}'.format(self=self)
-       #return str(self.terrain_type)

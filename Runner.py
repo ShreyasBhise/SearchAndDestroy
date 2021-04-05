@@ -3,7 +3,7 @@ from Cell import Cell
 from Agent import agent
 import pygame, time
 
-dim = 5
+dim = 2
 size = width, height = 900, 900
 screen = pygame.display.set_mode(size)
 environment = Grid(dim)
@@ -35,24 +35,25 @@ def update_ui():
                 text = font.render('X', True, (255, 0, 0))
                 rect = text.get_rect()
                 rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
-                screen.blit(text, rect)   
-            elif environment.field[i][j].searched:
-                text = font.render('C', True, (255, 69, 0))
-                rect = text.get_rect()
-                rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
                 screen.blit(text, rect)
             elif environment.field[i][j].curr_agent:
                 text = font.render('A', True, (0, 0, 0))
                 rect = text.get_rect()
                 rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
-                screen.blit(text, rect)
+                screen.blit(text, rect)   
+            # elif environment.field[i][j].searched:
+            #     text = font.render('C', True, (255, 69, 0))
+            #     rect = text.get_rect()
+            #     rect.center = (j*(width/dim) + (width/(2*dim)), i*(height/dim) + (height/(2*dim)))
+            #     screen.blit(text, rect)
+            
             pygame.draw.rect(screen,(0,0,0), (j*(width/dim), i*(height/dim), width/dim, height/dim), 1)
     pygame.display.flip()
 pygame.init()
 font = pygame.font.SysFont('segoeuissymbol', 50)
 update_ui()
 play_game = True
-
+agent.basic_agent1
 def get_queried_pos(pos):
     gap_w = width // dim
     gap_h = height // dim
@@ -63,9 +64,9 @@ while play_game:
     for event in pygame.event.get():
         if pygame.mouse.get_pressed()[0]:
             pos = get_queried_pos(pygame.mouse.get_pos())
-            print(environment.field[pos[0]][pos[1]])
+            #print(environment.field[pos[0]][pos[1]])
 
     agent.basic_agent1()
     update_ui()
-    time.sleep(0.5)
+    time.sleep(1)
 

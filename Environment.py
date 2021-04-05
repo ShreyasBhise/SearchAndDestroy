@@ -9,6 +9,12 @@ class Grid:
         rand_y = randint(0, self.dim - 1)
 
         self.field[rand_x][rand_y].set_target()
+        print(self.field[rand_x][rand_y])
+        ans = 0
+        asdf = 10000
+        for _ in range(asdf):
+            if not self.query_cell(rand_x, rand_y): ans += 1
+        print('False negative rate = ' + str(ans/asdf))
 
     def print_field(self):
         for i in range(self.dim):
@@ -28,4 +34,4 @@ class Grid:
             for j in range(dim):
                 self.field[i].append(Cell(i, j, random()))
         self.set_target()
-        self.print_field()
+        #self.print_field()

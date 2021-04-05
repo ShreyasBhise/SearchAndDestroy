@@ -11,36 +11,43 @@ class agent:
             return self.get_score()
         
         self.update_belief()
+        to_move = self.find_max_belief(self.belief[self.agent_x][self.agent_y])
+        if to_move.x != self.agent_x or to_move.y != self.agent_y:
+            self.move(to_move.x, to_move.y)
+        
+    def find_max_belief(self, curr_max):
+        max_cells = [self.environment.field[self.agent_x][self.agent_y]]
+        max_belief = curr_max
 
-        neighbors = ((-1, 0), (1, 0), (0, -1), (0,1))
-        max_belief = 0
-        max_cells = list()
-        for nb in neighbors:
-            tx = self.agent_x + nb[0]
-            ty = self.agent_y + nb[1]
-            if tx < 0 or ty < 0 or tx >= self.dim or ty >= self.dim:
-                continue
-            to_check = self.environment.field[tx][ty]
-            if self.belief[to_check.x][to_check.y] > max_belief:
-                max_belief = self.belief[to_check.x][to_check.y]
-                max_cells.clear()
-                max_cells.append(to_check)
-            elif self.belief[to_check.x][to_check.y]  == max_belief:
-                max_cells.append(to_check)
-            print(max_cells)
-        choice = randint(0, len(max_cells) - 1)
-        to_move = max_cells[choice]
-        self.move(to_move.x, to_move.y)
+        for i in range(self.dim):
+            for j in range(self.dim):
+                if i == self.agent_x and j == self.agent_y or self.belief[i][j] < max_belief: 
+                    continue
+                if self.belief[i][j] > max_belief:
+                    max_belief = self.belief[i][j]
+                    max_cells.clear()
+                max_cells.append(self.environment.field[i][j])
+        
+        return max_cells[randint(0, len(max_cells) - 1)]
+
+                
 
     def update_belief(self):
-        #TODO: actually update the belief
-        pass
+        (x, y) = (self.agent_x, self.agent_y)
+        self.belief[x][y] = self.belief[x][y] * self.environment.field[x][y].terrain_type
+        new_list = [(f'{num:.1f}' for num in lst) for lst in self.belief]
+        print(new_list)
+
+    def calculate_dist(self, old, new):
+        return abs(old[1] - new[1]) + abs(old[0]-new[0])
+
     def move(self, new_x, new_y):
+        cost = self.calculate_dist((self.agent_x, self.agent_y), (new_x, new_y))
         self.environment.field[self.agent_x][self.agent_y].curr_agent = False
         self.agent_x = new_x
         self.agent_y = new_y
         self.environment.field[self.agent_x][self.agent_y].curr_agent = True
-        self.time += 1
+        self.time += cost
 
     def search(self, s_x, s_y):
         self.time += 1
@@ -63,6 +70,3 @@ class agent:
             self.belief.append(list())
             for _ in range(self.dim):
                 self.belief[i].append(1/(self.environment.dim ** 2))
-    
-        pprint(self.environment.field)
-        pprint(self.belief)

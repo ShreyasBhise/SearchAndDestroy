@@ -50,7 +50,6 @@ def update_ui():
             pygame.draw.rect(screen,(0,0,0), (j*(width/dim), i*(height/dim), width/dim, height/dim), 1)
     pygame.display.flip()
 
-
 pygame.init()
 font = pygame.font.SysFont('segoeuissymbol', 50)
 update_ui()

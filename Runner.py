@@ -3,7 +3,7 @@ from Cell import Cell
 from Agent import agent
 import pygame, time
 
-dim = 5
+dim = 15
 size = width, height = 900, 900
 screen = pygame.display.set_mode(size)
 environment = Grid(dim)
@@ -69,8 +69,8 @@ while score is None:
             pos = get_queried_pos(pygame.mouse.get_pos())
             #print(environment.field[pos[0]][pos[1]])
 
-    score = agent.basic_agent1()
+    score = agent.basic_agent(2)
     update_ui()
-    time.sleep(.1)
+    #time.sleep(.1)
 
 print(score)

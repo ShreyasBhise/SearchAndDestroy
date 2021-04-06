@@ -14,6 +14,7 @@ class agent:
         to_move = self.find_max_belief(self.belief[self.agent_x][self.agent_y])
         if to_move.x != self.agent_x or to_move.y != self.agent_y:
             self.move(to_move.x, to_move.y)
+        return None
         
     def find_max_belief(self, curr_max):
         max_cells = [self.environment.field[self.agent_x][self.agent_y]]
@@ -30,13 +31,25 @@ class agent:
         
         return max_cells[randint(0, len(max_cells) - 1)]
 
-                
-
     def update_belief(self):
         (x, y) = (self.agent_x, self.agent_y)
-        self.belief[x][y] = self.belief[x][y] * self.environment.field[x][y].terrain_type
-        new_list = [(f'{num:.1f}' for num in lst) for lst in self.belief]
-        print(new_list)
+        target_in_cell = self.belief[x][y]
+        target_failed = self.environment.field[x][y].terrain_type
+        self.belief[x][y] = (target_in_cell*target_failed)/((target_in_cell*target_failed) + (1-target_in_cell))
+        pfail = (target_in_cell*target_failed) + (1-target_in_cell)
+
+        total_belief = self.belief[x][y]
+        for i in range(self.dim):
+            for j in range(self.dim):
+                if (i,j) == (x,y):
+                    continue
+                self.belief[i][j] /= pfail
+                total_belief += self.belief[i][j]
+
+        print(total_belief)
+        print(self.belief)
+        # new_list = [(f'{num:.1f}' for num in lst) for lst in self.belief]
+        # print(new_list)
 
     def calculate_dist(self, old, new):
         return abs(old[1] - new[1]) + abs(old[0]-new[0])
@@ -53,9 +66,9 @@ class agent:
         self.time += 1
         return self.environment.query_cell(s_x, s_y)
 
-    
     def get_score(self):
         return self.time
+    
     def __init__(self, env):
         self.environment = env
         self.dim = env.dim
@@ -70,3 +83,6 @@ class agent:
             self.belief.append(list())
             for _ in range(self.dim):
                 self.belief[i].append(1/(self.environment.dim ** 2))
+
+        print(self.environment.field)
+        print(self.belief)

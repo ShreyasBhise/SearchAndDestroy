@@ -3,7 +3,7 @@ from Cell import Cell
 from Agent import agent
 import pygame, time
 
-dim = 2
+dim = 5
 size = width, height = 900, 900
 screen = pygame.display.set_mode(size)
 environment = Grid(dim)
@@ -49,24 +49,28 @@ def update_ui():
             
             pygame.draw.rect(screen,(0,0,0), (j*(width/dim), i*(height/dim), width/dim, height/dim), 1)
     pygame.display.flip()
+
+
 pygame.init()
 font = pygame.font.SysFont('segoeuissymbol', 50)
 update_ui()
-play_game = True
-agent.basic_agent1
+# play_game = True
+score = None
+
 def get_queried_pos(pos):
     gap_w = width // dim
     gap_h = height // dim
     return  pos[1] // gap_w, pos[0] // gap_h
 
-while play_game:
+while score is None:
     pygame.time.Clock().tick(24)
     for event in pygame.event.get():
         if pygame.mouse.get_pressed()[0]:
             pos = get_queried_pos(pygame.mouse.get_pos())
             #print(environment.field[pos[0]][pos[1]])
 
-    agent.basic_agent1()
+    score = agent.basic_agent1()
     update_ui()
-    time.sleep(1)
+    time.sleep(.1)
 
+print(score)

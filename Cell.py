@@ -30,4 +30,4 @@ class Cell:
     
     
     def __repr__(self):
-       return '({self.x}, {self.y}) is {self.terrain_type}'.format(self=self)
+       return '{self.terrain_type} {self.is_target}'.format(self=self)

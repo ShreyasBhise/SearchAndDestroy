@@ -24,7 +24,7 @@ class Grid:
         
     def __init__(self, dim):
         self.dim = dim
-
+        self.target = None
         self.field = list()
         for i in range(dim):
             self.field.append(list())

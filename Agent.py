@@ -15,6 +15,20 @@ class agent:
         if to_move.x != self.agent_x or to_move.y != self.agent_y:
             self.move(to_move.x, to_move.y)
         return None
+
+    def advanced_agent(self, search_type):
+        found = self.search(self.agent_x, self.agent_y)
+        if found:
+            return self.get_score()
+        
+        self.update_belief()
+        optimal_cell = self.find_max_belief(search_type)
+        if(optimal_cell.x==self.agent_x and optimal_cell.y==self.agent_y): # best move is to stay in place
+            return None
+        to_move = self.best_path_move(optimal_cell)
+        if to_move[0] != self.agent_x or to_move[1] != self.agent_y:
+            self.move(to_move[0], to_move[1])
+        return None
         
     def find_max_belief(self, search_type):
 
@@ -123,3 +137,89 @@ class agent:
 
         # print(self.environment.field)
         # print(self.belief)
+
+    def best_path_move(self, optimal_cell):
+        x1 = self.agent_x
+        y1 = self.agent_y
+        x2 = optimal_cell.x
+        y2 = optimal_cell.y
+        switched = False
+        if(x1>x2): # reduce to 2 dp cases, so x1 is always to the right of x2
+            switched = True
+            temp = x2
+            x2 = x1
+            x1 = temp
+            temp = y2
+            y2 = y1
+            y1 = temp
+        
+        dp = list()
+        prev = list()
+
+        if y1>y2: # calculating path from top left to bottom right
+            for i in range(0, x2-x1+1):
+                dp.append(list())
+                prev.append(list())
+                for j in range(0, y1-y2+1):
+                    dp[i].append(0)
+                    prev[i].append((0, 0))
+                    if(i==0 and j==0): # base case
+                        dp[i][j]=self.belief[x1][y1]
+                        prev[i][j]=(-1, -1)
+                    elif(i==0):
+                        dp[i][j]=dp[i][j-1]+self.belief[x1][y1-j]
+                        prev[i][j]=(i, j-1)
+                    elif(j==0):
+                        dp[i][j]=dp[i-1][j]+self.belief[x1+i][y1]
+                        prev[i][j]=(i-1, j)
+                    else:
+                        if(dp[i-1][j]>dp[i][j-1]):
+                            dp[i][j]=dp[i-1][j]+self.belief[x1+i][y1-j]
+                            prev[i][j]=(i-1, j)
+                        else:
+                            dp[i][j]=dp[i][j-1]+self.belief[x1+i][y1-j]
+                            prev[i][j]=(i, j-1)
+                    if(i==x2-x1 and j==y1-y2):
+                        if switched:
+                            return (x1+prev[i][j][0], y1-prev[i][j][1])
+                        else:
+                            curr = (i, j)
+                            parent = prev[i][j]
+                            while parent[0]!=0 or parent[1]!=0:
+                                curr = parent
+                                parent = prev[curr[0]][curr[1]]
+                            return (x1+curr[0], y1-curr[1])
+
+        else: # calculating path from bottom left to top right
+            for i in range(0, x2-x1+1):
+                dp.append(list())
+                prev.append(list())
+                for j in range(0, y2-y1+1):
+                    dp[i].append(0)
+                    prev[i].append((0, 0))
+                    if(i==0 and j==0): # base case
+                        dp[i][j]=self.belief[x1][y1]
+                        prev[i][j]=(-1, -1)
+                    elif(i==0):
+                        dp[i][j]=dp[i][j-1]+self.belief[x1][y1+j]
+                        prev[i][j]=(i, j-1)
+                    elif(j==0):
+                        dp[i][j]=dp[i-1][j]+self.belief[x1+i][y1]
+                        prev[i][j]=(i-1, j)
+                    else:
+                        if(dp[i-1][j]>dp[i][j-1]):
+                            dp[i][j]=dp[i-1][j]+self.belief[x1+i][y1+j]
+                            prev[i][j]=(i-1, j)
+                        else:
+                            dp[i][j]=dp[i][j-1]+self.belief[x1+i][y1+j]
+                            prev[i][j]=(i, j-1)
+                    if(i==x2-x1 and j==y2-y1):
+                        if switched:
+                            return (x1+prev[i][j][0], y1+prev[i][j][1])
+                        else:
+                            curr = (i, j)
+                            parent = prev[i][j]
+                            while parent[0]!=0 or parent[1]!=0:
+                                curr = parent
+                                parent = prev[curr[0]][curr[1]]
+                            return (x1+curr[0], y1+curr[1])

@@ -15,11 +15,19 @@ hill2 = []
 forest2 = []
 cave2= []
 
+<<<<<<< Updated upstream
 outer_loop = 15
 inner_loop = 30
 start = time()
 for i in range(outer_loop):
     env = Grid(50)
+=======
+outer_loop = 10
+inner_loop = 10
+start = time()
+for i in range(outer_loop):
+    env = Grid(20)
+>>>>>>> Stashed changes
     sum1 = 0
     sum2 = 0
     print(i)
@@ -29,10 +37,10 @@ for i in range(outer_loop):
         temp1 = None
         temp2 = None
         while temp1 == None:
-            temp1 = agent1.basic_agent(1)
+            temp1 = agent1.basic_agent(2)
         
         while temp2 == None:
-            temp2 = agent2.basic_agent(2)
+            temp2 = agent2.advanced_agent(2)
         
         sum1 += temp1
         sum2 += temp2

@@ -8,7 +8,7 @@ size = width, height = 900, 900
 screen = pygame.display.set_mode(size)
 environment = Grid(dim)
 agent = agent(environment)
-
+(x, y) = (agent.agent_x, agent.agent_y)
 
 FLAT = 0.1
 HILL = 0.3
@@ -68,8 +68,23 @@ while score is None:
             pos = get_queried_pos(pygame.mouse.get_pos())
             #print(environment.field[pos[0]][pos[1]])
 
-    score = agent.basic_agent(2)
+    score = agent.advanced_agent(2)
     update_ui()
     #time.sleep(.1)
 
+print(score)
+score = None
+agent.agent_x = x
+agent.agent_y = y
+
+while score is None:
+    pygame.time.Clock().tick(24)
+    for event in pygame.event.get():
+        if pygame.mouse.get_pressed()[0]:
+            pos = get_queried_pos(pygame.mouse.get_pos())
+            #print(environment.field[pos[0]][pos[1]])
+
+    score = agent.basic_agent(2)
+    update_ui()
+    #time.sleep(.1)
 print(score)

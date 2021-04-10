@@ -22,10 +22,12 @@ class agent:
             return self.get_score()
         
         self.update_belief()
-        optimal_cell = self.find_max_belief(search_type)
-        if(optimal_cell.x==self.agent_x and optimal_cell.y==self.agent_y): # best move is to stay in place
+        if self.optimal_cell is None: 
+            self.optimal_cell = self.find_max_belief(search_type)
+        if(self.optimal_cell.x==self.agent_x and self.optimal_cell.y==self.agent_y): # best move is to stay in place
+            self.optimal_cell = None
             return None
-        to_move = self.best_path_move(optimal_cell)
+        to_move = self.best_path_move(self.optimal_cell)
         if to_move[0] != self.agent_x or to_move[1] != self.agent_y:
             self.move(to_move[0], to_move[1])
         return None
@@ -126,6 +128,7 @@ class agent:
         self.time = 0
         self.agent_x = randint(0, self.dim - 1)
         self.agent_y = randint(0, self.dim - 1)
+        self.optimal_cell = None
         
         self.environment.field[self.agent_x][self.agent_y].curr_agent = True
 

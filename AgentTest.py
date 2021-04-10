@@ -10,8 +10,8 @@ frst = [[],[],[]]
 cave = [[],[],[]]
 
 
-outer_loop = 15
-inner_loop = 30
+outer_loop = 5
+inner_loop = 5
 start = time()
 for i in range(outer_loop):
     env = Grid(50)
@@ -32,10 +32,10 @@ for i in range(outer_loop):
             temp1 = agent1.basic_agent(1)
         
         while temp2 == None:
-            temp2 = agent1.basic_agent(2)
+            temp2 = agent2.basic_agent(2)
         
         while temp3 == None:
-            temp3 = agent2.advanced_agent(2)
+            temp3 = agent3.advanced_agent(2)
 
         sum1 += temp1
         sum2 += temp2

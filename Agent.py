@@ -4,34 +4,40 @@ from pprint import pprint
 from random import randint
 class agent:
 
-    #Travel to the cell with the highest belief that the target is in the 
+    # Travel to the cell with the highest belief that the target is in that cell/chance of finding target
+    # based on if search_type equals 1 or 2 respectively
     def basic_agent(self, search_type):
-        found = self.search(self.agent_x, self.agent_y)
-        if found:
+        found = self.search(self.agent_x, self.agent_y) # First searches current cell
+        if found: # Return score if search is successful
             return self.get_score()
         
-        self.update_belief()
-        to_move = self.find_max_belief(search_type)
-        if to_move.x != self.agent_x or to_move.y != self.agent_y:
+        self.update_belief() # Updates belief based on search
+        to_move = self.find_max_belief(search_type) # finds next cell to move to - cell with max current belief/chance of finding target
+        if to_move.x != self.agent_x or to_move.y != self.agent_y: # moves agent to the next cell
             self.move(to_move.x, to_move.y)
         return None
 
+    # Make one step toward cell with the highest belief that the target is in that cell/chance of finding target
+    # based on if search_type equals 1 or 2 respectively
+    # Uses optimal shortest path to that cell
     def advanced_agent(self, search_type):
-        found = self.search(self.agent_x, self.agent_y)
-        if found:
+        found = self.search(self.agent_x, self.agent_y) # First searches current cell
+        if found: # Return score if search is successful
             return self.get_score()
         
-        self.update_belief()
-        if self.optimal_cell is None: 
+        self.update_belief() # Updates belief based on search
+        if self.optimal_cell is None: # If optimal_cell is None, we must find new optimal_cell
             self.optimal_cell = self.find_max_belief(search_type)
         if(self.optimal_cell.x==self.agent_x and self.optimal_cell.y==self.agent_y): # best move is to stay in place
-            self.optimal_cell = None
+            self.optimal_cell = None # We will next search optimal_cell, so we set it to None so next iteration calculates the next optimal_cell
             return None
-        to_move = self.best_path_move(self.optimal_cell)
-        if to_move[0] != self.agent_x or to_move[1] != self.agent_y:
+        to_move = self.best_path_move(self.optimal_cell) # finds next move along optimal path to optimal_cell
+        if to_move[0] != self.agent_x or to_move[1] != self.agent_y: # moves agent as long as to_move is not the current cell
             self.move(to_move[0], to_move[1])
         return None
-        
+
+    # Returns the cell with the highest belief that the target is in that cell/highest chance of finding target
+    # based on if search_type equals 1 or 2 respectively    
     def find_max_belief(self, search_type):
 
         max_cells = list() # A list of all cells with maximal belief and then minimal distance from agent.
@@ -83,6 +89,7 @@ class agent:
 
         return max_cells[randint(0, len(max_cells) - 1)]
 
+    # Recalculates the belief for all cells after a search
     def update_belief(self):
         (x, y) = (self.agent_x, self.agent_y)
         target_in_cell = self.belief[x][y]
@@ -99,10 +106,11 @@ class agent:
                 self.belief[i][j] /= pfail
 
       
-
+    # Returns manhattan distance between two cells
     def calculate_dist(self, old, new):
         return abs(old[1] - new[1]) + abs(old[0]-new[0])
 
+    # Moves agent and updates the total cost
     def move(self, new_x, new_y):
         cost = self.calculate_dist((self.agent_x, self.agent_y), (new_x, new_y))
         self.environment.field[self.agent_x][self.agent_y].curr_agent = False
@@ -111,13 +119,16 @@ class agent:
         self.environment.field[self.agent_x][self.agent_y].curr_agent = True
         self.time += cost
 
+    # Searches cell
     def search(self, s_x, s_y):
         self.time += 1
         return self.environment.query_cell(s_x, s_y)
 
+    # Returns current total cost of searches + moving
     def get_score(self):
         return self.time
     
+    # Initalizes agent
     def __init__(self, env):
         self.environment = env
         self.dim = env.dim
@@ -134,8 +145,7 @@ class agent:
             for _ in range(self.dim):
                 self.belief[i].append(1/(self.environment.dim ** 2))
 
-        
-
+    # Returns cell in which the first move of optimal path between current cell and optimal_cell goes to
     def best_path_move(self, optimal_cell):
         x1 = self.agent_x
         y1 = self.agent_y

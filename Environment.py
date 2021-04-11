@@ -31,4 +31,3 @@ class Grid:
             for j in range(dim):
                 self.field[i].append(Cell(i, j, random()))
         self.target = self.set_target()
-        #self.print_field()

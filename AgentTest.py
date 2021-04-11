@@ -10,8 +10,8 @@ frst = [[],[],[]]
 cave = [[],[],[]]
 
 
-outer_loop = 5
-inner_loop = 5
+outer_loop = 15
+inner_loop = 30
 start = time()
 for i in range(outer_loop):
     env = Grid(50)

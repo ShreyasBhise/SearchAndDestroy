@@ -91,18 +91,14 @@ class agent:
         self.belief[x][y] = (target_in_cell*target_failed)/((target_in_cell*target_failed) + (1-target_in_cell))
         pfail = (target_in_cell*target_failed) + (1-target_in_cell)
 
-        # total_belief = self.belief[x][y]
+        
         for i in range(self.dim):
             for j in range(self.dim):
                 if (i,j) == (x,y):
                     continue
                 self.belief[i][j] /= pfail
-                # total_belief += self.belief[i][j]
 
-        # print(total_belief)
-        # print(self.belief)
-        # new_list = [(f'{num:.1f}' for num in lst) for lst in self.belief]
-        # print(new_list)
+      
 
     def calculate_dist(self, old, new):
         return abs(old[1] - new[1]) + abs(old[0]-new[0])
@@ -138,8 +134,7 @@ class agent:
             for _ in range(self.dim):
                 self.belief[i].append(1/(self.environment.dim ** 2))
 
-        # print(self.environment.field)
-        # print(self.belief)
+        
 
     def best_path_move(self, optimal_cell):
         x1 = self.agent_x

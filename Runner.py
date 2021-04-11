@@ -53,7 +53,6 @@ def update_ui():
 pygame.init()
 font = pygame.font.SysFont('segoeuissymbol', 50)
 update_ui()
-# play_game = True
 score = None
 
 def get_queried_pos(pos):
@@ -66,25 +65,9 @@ while score is None:
     for event in pygame.event.get():
         if pygame.mouse.get_pressed()[0]:
             pos = get_queried_pos(pygame.mouse.get_pos())
-            #print(environment.field[pos[0]][pos[1]])
-
-    score = agent.advanced_agent(2)
+            
+    score = agent.advanced_agent(1)
     update_ui()
-    #time.sleep(.1)
+    time.sleep(0.1)
 
-print(score)
-score = None
-agent.agent_x = x
-agent.agent_y = y
-
-while score is None:
-    pygame.time.Clock().tick(24)
-    for event in pygame.event.get():
-        if pygame.mouse.get_pressed()[0]:
-            pos = get_queried_pos(pygame.mouse.get_pos())
-            #print(environment.field[pos[0]][pos[1]])
-
-    score = agent.basic_agent(2)
-    update_ui()
-    #time.sleep(.1)
 print(score)
